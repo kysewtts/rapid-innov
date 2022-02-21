@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const db = require('./db/queries');
+const coachRoutes = require('./routes/coachRoutes');
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+app.use('/coach', coachRoutes);
 
 app.use((error, req, res, next) => {
   console.log(error);
