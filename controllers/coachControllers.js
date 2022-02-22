@@ -1,10 +1,6 @@
 const db = require('../db/queries');
 
-exports.sortByEfficiency = (arr) => {
-  return arr.sort((a, b) => {
-    return b.won / b.matches_played - a.won / a.matches_played;
-  });
-};
+const helpers = require('../helpers/helpers');
 
 exports.getPlayers = (req, res, next) => {
   let id = req.params.coachId;
@@ -13,7 +9,7 @@ exports.getPlayers = (req, res, next) => {
     .then((resp) => {
       let value = [...resp.rows];
       if (resp.rows.length) {
-        value = sortByEfficiency(value);
+        value = helpers.sortByEfficiency(value);
       }
       res.status(200).json({
         message: resp.rows.length
@@ -41,7 +37,7 @@ exports.getNameAndSport = (req, res, next) => {
   db.query(query, values).then((resp) => {
     let value = [...resp.rows];
     if (resp.rows.length) {
-      value = sortByEfficiency(value);
+      value = helpers.sortByEfficiency(value);
     }
     res.status(200).json({
       message: resp.rows.length

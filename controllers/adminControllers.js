@@ -1,5 +1,5 @@
 const db = require('../db/queries');
-const sortByEfficiency = require('./coachControllers');
+const helpers = require('../helpers/helpers');
 
 exports.getPlayers = (req, res, next) => {
   const query = 'SELECT * FROM PLAYERS';
@@ -7,7 +7,7 @@ exports.getPlayers = (req, res, next) => {
     .then((resp) => {
       let value = [...resp.rows];
       if (resp.rows.length) {
-        value = sortByEfficiency(value);
+        value = helpers.sortByEfficiency(value);
       }
       res.status(200).json({
         message: resp.rows.length
