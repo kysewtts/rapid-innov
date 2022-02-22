@@ -26,7 +26,7 @@ exports.getPlayers = (req, res, next) => {
     });
 };
 
-exports.getNameAndSport = (req, res, next) => {
+exports.getByNameAndSport = (req, res, next) => {
   let coachId = req.params.coachId;
   let fname = req.params.fname;
   let lname = req.params.lname;
@@ -56,9 +56,10 @@ exports.postPlayers = (req, res, next) => {
   let won = req.body.won;
   let lost = req.body.lost;
   let sport = req.body.sport;
-  const values = [fname, lname, played, won, lost, sport, coachId];
+  let team = req.body.team;
+  const values = [fname, lname, played, won, lost, sport, coachId, team];
   const query =
-    'INSERT INTO PLAYERS(FNAME, LNAME, MATCHES_PLAYED, WON, LOST, SPORT, CID) VALUES($1, $2, $3, $4, $5, $6, $7)';
+    'INSERT INTO PLAYERS(FNAME, LNAME, MATCHES_PLAYED, WON, LOST, SPORT, CID, TEAM) VALUES($1, $2, $3, $4, $5, $6, $7, $8)';
   db.query(query, values)
     .then((resp) => {
       res.status(201).json({
