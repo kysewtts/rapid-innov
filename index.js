@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const db = require('./db/queries');
 const coachRoutes = require('./routes/coachRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/admin', adminRoutes);
 app.use('/coach', coachRoutes);
 
 app.use((error, req, res, next) => {

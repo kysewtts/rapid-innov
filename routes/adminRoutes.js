@@ -1,10 +1,9 @@
 const express = require('express');
 
-const coachControllers = require('../controllers/coachControllers');
+const adminControllers = require('../controllers/adminControllers');
 
 const router = express.Router();
 
-router.get('/:coachId', coachControllers.getPlayers);
-router.post('/:coachId', coachControllers.postPlayers);
+router.get('/', adminControllers.getPlayers);
 
 module.exports = router;
