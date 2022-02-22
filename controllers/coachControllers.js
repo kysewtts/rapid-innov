@@ -1,5 +1,11 @@
 const db = require('../db/queries');
 
+let sortByEfficiency = (arr) => {
+  return arr.sort((a, b) => {
+    return b.won / b.matches_played - a.won / a.matches_played;
+  });
+};
+
 exports.getPlayers = (req, res, next) => {
   let id = req.params.coachId;
   let query = 'SELECT * FROM PLAYERS WHERE CID=$1';
@@ -7,10 +13,7 @@ exports.getPlayers = (req, res, next) => {
     .then((resp) => {
       let value = [...resp.rows];
       if (resp.rows.length) {
-        value.sort((a, b) => {
-          //   return a.won / a.matches_played - b.won / b.matches_played;
-          return b.won / b.matches_played - a.won / a.matches_played;
-        });
+        value = sortByEfficiency(value);
       }
       res.status(200).json({
         message: resp.rows.length
@@ -25,6 +28,28 @@ exports.getPlayers = (req, res, next) => {
       }
       next(err);
     });
+};
+
+exports.getNameAndSport = (req, res, next) => {
+  let coachId = req.params.coachId;
+  let fname = req.params.fname;
+  let lname = req.params.lname;
+  let sport = req.params.sport;
+  const query =
+    'SELECT * FROM PLAYERS WHERE CID=$1 AND FNAME=$2 AND LNAME=$3 AND SPORT=$4';
+  const values = [coachId, fname, lname, sport];
+  db.query(query, values).then((resp) => {
+    let value = [...resp.rows];
+    if (resp.rows.length) {
+      value = sortByEfficiency(value);
+    }
+    res.status(200).json({
+      message: resp.rows.length
+        ? 'Fetched successfully!!'
+        : `No players with coachId:${id} found`,
+      players: resp.rows.length ? value : 0,
+    });
+  });
 };
 
 exports.postPlayers = (req, res, next) => {
